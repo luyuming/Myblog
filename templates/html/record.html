@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/img/favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Record</title>
+</head>
+<body>
+    {{template "public.html" .}}
+    <div class="container">
+        <div class="page-header">
+            <h2 style="color: midnightblue">{{.recordinfo.Title}}</h2>
+        </div>
+        <div class="page-header1">
+            <div class="media">
+                <a  class="media-left">
+                    <img src="/img/user.png" width="50"/>
+                </a>
+                <div class="media-body">
+                    <a href="{{.userinfo.ID | printf "/user/%d"}}"><h4 class="media-heading">{{.userinfo.Name}}</h4></a>
+                    <p>访问数:文章数:收获喜欢
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br><br>
+    <div class="container">
+        <div class="page-header1">
+            <p style="font-size: 16px">{{.recordinfo.Content}}</p>
+        </div>
+    </div>
+    <br><br>
+    <div class="container">
+    <form role="form" action="./{{.recordinfo.ID}}" method="post">
+        <div class="form-group">
+            <textarea placeholder="发表评论" class="form-control" rows="3" name="comment" style="resize:none;"></textarea>
+        </div>
+        <div class="form-group col-md-offset-11">
+            <button type="submit" class="btn btn-success pull-left">发表评论</button>
+        </div>
+    </form>
+    </div>
+    <br><br>
+    <div class="container">
+        <div>
+            {{if gt (len .recordinfo.Comments) 0}}
+                {{range .recordinfo.Comments}}
+                    <div class="page-header">
+                        <span style="color: midnightblue">{{.Name}}</span>:
+                        <span style="color: dimgray">{{.Content}}</span>
+                        <br>
+                        {{.Created_at}}
+                    </div>
+                {{end}}
+            {{end}}
+        </div>
+    </div>
+</body>
+</html>

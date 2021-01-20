@@ -1,0 +1,14 @@
+{{if .logininfo.Islogin}}
+    <a href="/quit"><input type="button" class="btn btn-link pull-right" value="退出"></a>
+    <a href="{{.logininfo.Userid |printf "/user/%d"}}"><input type="button" class="btn btn-link pull-right" value={{.logininfo.Username}}></a>
+    <a href="/record/create"><input type="button" class="btn btn-link pull-right" value="写文章"></a>
+    <a href="/"><input type="button" class="btn btn-link pull-right" value="首页"></a>
+{{else}}
+    <a href="/login"><input type="button" class="btn btn-link pull-right" value="登录"></a>
+    <a href="/register"><input type="button" class="btn btn-link pull-right" value="注册"></a>
+    <a href="/record/create"><input type="button" class="btn btn-link pull-right" value="写文章"></a>
+    <a href="/"><input type="button" class="btn btn-link pull-right" value="首页"></a>
+{{end}}
+
+
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link href="/img/favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function like(obj, id) {
+            var ele = obj.getElementsByClassName("glyphicon")[0]
+            var islike
+            if (obj.getElementsByClassName("active").length == 0) {
+                ele.classList.add("active")
+                islike = true
+            } else {
+                ele.classList.remove("active")
+                islike = false
+            }
+            var ele = obj.getElementsByClassName("star")[0]
+            var url = "/record/likes/" + id
+            //ajax
+            $.ajax({
+                type : "get",
+                url : url,
+                data : {islike:islike},
+                success: function (result) {
+                    ele.innerHTML = result
+                }
+            })
+        }
+    </script>
+      <style>
+      .active {
+          color: red;
+      }
+      </style>
+</head>
+<body>
+    {{template "public.html" .}}
+    <div class="container">
+        <ul>
+            {{range .records}}
+                <div class="page-header">
+                    <a href={{.Record.ID |printf "/record/read/%d"}}><h2 style="color: midnightblue">{{.Record.Title}}</h2></a>
+                    <p style="color: dimgray">{{.Record.Content}}</p>
+                    <br>
+                    <a href="{{.Record.UserID |printf "/user/%d"}}"><span>{{.UserName}}</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div style="display: inline" onclick="like(this, {{.Record.ID}})">
+                        <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> <span class="star">{{.Star}}</span>
+                    </div>
+
+                </div>
+            {{end}}
+        </ul>
+        <div style="text-align: center">
+            <ul class="pagination">
+                {{if ne .paginator.PageNow 1}}
+                    <li><a href="/record/page/{{.paginator.LastPage}}">上一页</a></li>
+                {{end}}
+                {{range $k, $v := .paginator.PageNums}}
+                    {{if eq $v $.paginator.PageNow}}
+                        <li class="active"><a href="/record/page/{{$v}}">{{$v}}</a></li>
+                    {{else}}
+                        <li><a href="/record/page/{{$v}}">{{$v}}</a></li>
+                    {{end}}
+                {{end}}
+                {{if ne .paginator.PageNow .paginator.PageTotal}}
+                    <li><a href="/record/page/{{.paginator.NextPage}}">下一页</a></li>
+                {{end}}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

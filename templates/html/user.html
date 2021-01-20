@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/img/favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>个人主页</title>
+</head>
+<body>
+    {{template "public.html" .}}
+    <div class="container">
+        <div class="page-header">
+            <div class="media">
+                <a  class="media-left">
+                    <img src="/img/user.png" width="100"/>
+                </a>
+                <div class="media-body">
+                    <br>
+                    <h4 class="media-heading">{{.userinfo.Name}}</h4><br>
+                    <p>访问数 {{.visits}} 文章数 {{len .userinfo.Records}} 收获喜欢
+                    </p>
+                </div>
+            </div>
+        </div>
+        {{if gt (len .userinfo.Records) 0}}
+            {{range .userinfo.Records}}
+                <div class="page-header">
+                    <a href={{.ID | printf "/record/read/%d"}}><h2 style="color: midnightblue">{{.Title}}</h2></a>
+                    <p style="color: dimgray">{{.Content}}</p>
+                    <br>
+                    {{.Created_at}}
+                </div>
+            {{end}}
+        {{else}}
+            <p>你的博客还是空白，开始写文章吧</p>
+        {{end}}
+    </div>
+</body>
+</html>
